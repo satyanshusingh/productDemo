@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Helpdesk | Team workspace</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+<main>
+  <section id="loginView" class="login-view">
+    <a class="brand" href="/" aria-label="Helpdesk home">
+      <span class="brand-mark">H</span>
+      <span>helpdesk<span class="brand-period">.</span></span>
+    </a>
+    <div class="login-layout">
+      <div class="login-welcome">
+        <p class="eyebrow">CUSTOMER OPERATIONS</p>
+        <h1>Good support starts with a clear view.</h1>
+        <p class="subtitle">Sign in to manage your team's support queue, collaborate, and keep every ticket moving.</p>
+        <div class="login-points">
+          <p><span>01</span> One shared, real-time ticket queue</p>
+          <p><span>02</span> Clear ownership from start to finish</p>
+          <p><span>03</span> Team updates in one workspace</p>
+        </div>
+      </div>
+      <section class="card login-card">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">WELCOME BACK</p>
+            <h2>Sign in to your account</h2>
+          </div>
+        </div>
+        <form id="loginForm">
+          <label for="loginRole">Account type</label>
+          <select id="loginRole" required>
+            <option value="agent">Agent</option>
+            <option value="manager">Manager</option>
+          </select>
+
+          <label for="username">Username</label>
+          <input id="username" autocomplete="username" placeholder="Enter your username" required>
+          <label for="password">Password</label>
+          <input id="password" type="password" autocomplete="current-password" placeholder="Enter your password" required>
+
+          <button id="loginButton" type="submit">Sign in</button>
+        </form>
+        <p id="loginMessage" class="login-message" role="alert" aria-live="polite"></p>
+        <p class="login-footnote">Secure access for your support team</p>
+      </section>
+    </div>
+  </section>
+
+  <div id="workspace" hidden>
+    <header class="page-header">
+      <div>
+        <p class="eyebrow">CUSTOMER OPERATIONS</p>
+        <h1>Helpdesk workspace</h1>
+        <p class="subtitle">Manage, assign, and resolve customer support tickets.</p>
+      </div>
+      <div class="workspace-account">
+        <p id="status" class="connection-status">Not connected</p>
+        <button id="logout" class="button-signout" type="button" hidden>Sign out</button>
+      </div>
+    </header>
+
+  <div id="managerTools" class="grid" hidden>
+    <section class="card">
+      <p class="eyebrow">TEAM ACCESS</p>
+      <h2>Register an agent</h2>
+      <form id="agentForm">
+        <label for="agentUsername">Agent username</label>
+        <input id="agentUsername" minlength="3" maxlength="32"
+               pattern="[A-Za-z0-9_-]+" autocomplete="off" required>
+        <label for="agentPassword">Temporary password</label>
+        <input id="agentPassword" type="password" minlength="8" maxlength="128"
+               autocomplete="new-password" required>
+        <button type="submit">Add agent</button>
+      </form>
+      <div class="agent-list-heading">
+        <h3>Registered agents</h3>
+        <span id="agentCount" class="count-badge">0 agents</span>
+      </div>
+      <ul id="agentsList" class="agent-list"></ul>
+    </section>
+
+    <section class="card">
+      <p class="eyebrow">NEW WORK</p>
+      <h2>Create a ticket</h2>
+      <form id="ticketForm">
+        <label for="ticketTitle">Title</label>
+        <input id="ticketTitle" maxlength="120" required>
+        <label for="ticketDescription">Description</label>
+        <textarea id="ticketDescription" maxlength="1000" rows="3"
+                  placeholder="Describe the issue and any useful context"></textarea>
+        <label for="ticketPriority">Priority</label>
+        <select id="ticketPriority">
+          <option>Critical</option>
+          <option>High</option>
+          <option>Medium</option>
+          <option>Low</option>
+        </select>
+        <label for="ticketAssignee">Assign to agent</label>
+        <select id="ticketAssignee">
+          <option value="">Unassigned</option>
+        </select>
+        <button type="submit">Create ticket</button>
+      </form>
+    </section>
+
+  </div>
+
+  <section class="card full">
+    <div class="section-heading tickets-heading">
+      <div>
+        <p class="eyebrow">LIVE QUEUE</p>
+        <h2>Support tickets</h2>
+      </div>
+      <p class="muted">Ticket updates are shared with the team in real time.</p>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Ticket details</th>
+            <th>Priority</th>
+            <th>Status</th>
+            <th>Assignee</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="tickets">
+          <tr><td colspan="6">Log in to load tickets.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+  <section class="card full">
+    <details>
+      <summary>Team activity</summary>
+      <form id="chatForm" class="chat-form">
+        <label for="message">Send a team message</label>
+        <input id="message" maxlength="500" placeholder="Write a short update" required>
+        <button id="sendMessage" type="submit" disabled>Send message</button>
+      </form>
+      <ul id="log"></ul>
+    </details>
+  </section>
+
+  <dialog id="ticketDetailsDialog" class="app-dialog">
+    <div class="dialog-heading">
+      <div>
+        <p class="eyebrow">TICKET DETAILS</p>
+        <h2 id="ticketDetailsTitle">Ticket</h2>
+      </div>
+      <button type="button" class="icon-button" data-close-dialog aria-label="Close">×</button>
+    </div>
+    <dl id="ticketDetails" class="ticket-details"></dl>
+    <div class="dialog-actions">
+      <button id="editTicketFromDetails" type="button" hidden>Edit ticket</button>
+      <button type="button" class="button-secondary" data-close-dialog>Close</button>
+    </div>
+  </dialog>
+
+  <dialog id="ticketEditDialog" class="app-dialog">
+    <div class="dialog-heading">
+      <div>
+        <p class="eyebrow">MANAGER ACTION</p>
+        <h2>Edit ticket</h2>
+      </div>
+      <button type="button" class="icon-button" data-close-dialog aria-label="Close">×</button>
+    </div>
+    <form id="ticketEditForm">
+      <input id="editTicketId" type="hidden">
+      <label for="editTicketTitle">Title</label>
+      <input id="editTicketTitle" maxlength="120" required>
+      <label for="editTicketDescription">Description</label>
+      <textarea id="editTicketDescription" maxlength="1000" rows="4"></textarea>
+      <label for="editTicketPriority">Priority</label>
+      <select id="editTicketPriority">
+        <option>Critical</option>
+        <option>High</option>
+        <option>Medium</option>
+        <option>Low</option>
+      </select>
+      <label for="editTicketAssignee">Assigned agent</label>
+      <select id="editTicketAssignee">
+        <option value="">Unassigned</option>
+      </select>
+      <div class="dialog-actions">
+        <button type="submit">Save changes</button>
+        <button type="button" class="button-secondary" data-close-dialog>Cancel</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="removeAgentDialog" class="app-dialog remove-confirm-dialog">
+    <div class="dialog-heading">
+      <div>
+        <p class="eyebrow">CONFIRM REMOVAL</p>
+        <h2>Remove this agent?</h2>
+      </div>
+      <button type="button" class="icon-button" data-close-dialog aria-label="Close">×</button>
+    </div>
+    <p id="removeAgentMessage" class="muted"></p>
+    <div class="dialog-actions">
+      <button id="confirmRemoveAgent" type="button" class="button-danger">Sure, remove</button>
+      <button type="button" class="button-secondary" data-close-dialog>Cancel</button>
+    </div>
+  </dialog>
+  </div>
+</main>
+
+<script src="./index.js"></script>
+</body>
+</html>
